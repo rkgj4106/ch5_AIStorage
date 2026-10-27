@@ -1,0 +1,45 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: aistor-console-port-forward
+  namespace: aistor-server
+rules:
+  # AIStor Console Service 확인
+  - apiGroups: [""]
+    resources: ["services"]
+    resourceNames: ["aistor-server-console"]
+    verbs: ["get"]
+
+  # Service에 연결된 Pod 선택 및 확인
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list"]
+
+  # 선택된 Pod에 포트포워드
+  - apiGroups: [""]
+    resources: ["pods/portforward"]
+    verbs: ["create", "get"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: aistor-console-students
+  namespace: aistor-server
+subjects:
+  - {kind: User, name: stud01, apiGroup: rbac.authorization.k8s.io}
+  - {kind: User, name: stud02, apiGroup: rbac.authorization.k8s.io}
+  - {kind: User, name: stud03, apiGroup: rbac.authorization.k8s.io}
+  - {kind: User, name: stud04, apiGroup: rbac.authorization.k8s.io}
+  - {kind: User, name: stud05, apiGroup: rbac.authorization.k8s.io}
+  - {kind: User, name: stud06, apiGroup: rbac.authorization.k8s.io}
+  - {kind: User, name: stud07, apiGroup: rbac.authorization.k8s.io}
+  - {kind: User, name: stud08, apiGroup: rbac.authorization.k8s.io}
+  - {kind: User, name: stud09, apiGroup: rbac.authorization.k8s.io}
+  - {kind: User, name: stud10, apiGroup: rbac.authorization.k8s.io}
+  - {kind: User, name: stud11, apiGroup: rbac.authorization.k8s.io}
+  - {kind: User, name: stud12, apiGroup: rbac.authorization.k8s.io}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: aistor-console-port-forward
